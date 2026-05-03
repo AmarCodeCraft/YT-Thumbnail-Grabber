@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#18181b"/>
+      <stop offset="100%" stop-color="#09090b"/>
+    </linearGradient>
+    <linearGradient id="play" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ef4444"/>
+      <stop offset="100%" stop-color="#dc2626"/>
+    </linearGradient>
+    <filter id="shadow">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#000" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  <!-- Rounded square background -->
+  <rect width="512" height="512" rx="108" fill="url(#bg)"/>
+  <!-- YouTube-style rounded rectangle -->
+  <rect x="76" y="136" width="360" height="240" rx="40" fill="url(#play)" filter="url(#shadow)"/>
+  <!-- Play triangle -->
+  <polygon points="224,196 224,316 328,256" fill="#fff"/>
+  <!-- Download arrow -->
+  <line x1="256" y1="400" x2="256" y2="448" stroke="#71717a" stroke-width="12" stroke-linecap="round"/>
+  <polyline points="232,432 256,456 280,432" fill="none" stroke="#71717a" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+  <line x1="220" y1="464" x2="292" y2="464" stroke="#71717a" stroke-width="12" stroke-linecap="round"/>
+</svg>
