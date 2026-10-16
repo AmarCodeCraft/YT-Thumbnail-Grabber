@@ -1,12 +1,40 @@
 @import "tailwindcss";
 
+/* ── Design tokens ────────────────────────────────────────────────────────────
+   Grounded in video-production vernacular: studio monitor, timecode, REC flag,
+   film grain. One accent family (YouTube red + amber "recording" highlight). */
+
+@theme {
+  --color-bg: #07070B;
+  --color-surface-1: #0E0E16;
+  --color-surface-2: #16161F;
+  --color-surface-3: #1F1F2B;
+  --color-border: #2A2A38;
+  --color-border-soft: #20202C;
+  --color-red: #FF2D31;
+  --color-red-dim: rgba(255, 45, 49, 0.14);
+  --color-amber: #FFB000;
+  --color-text: #E8E8F0;
+  --color-muted: #9A9AAF;
+  --color-faint: #5E5E70;
+  --font-display: "Space Grotesk", system-ui, sans-serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+/* ── Base ───────────────────────────────────────────────────────────────────── */
+
 * {
   scroll-behavior: smooth;
 }
 
 ::selection {
-  background-color: rgba(239, 68, 68, 0.3);
+  background-color: var(--color-red-dim);
   color: #fff;
+}
+
+html {
+  scroll-padding-top: 4rem;
 }
 
 body {
@@ -15,35 +43,108 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
+  background:
+    radial-gradient(1200px 600px at 80% -10%, rgba(255, 45, 49, 0.06), transparent 60%),
+    radial-gradient(900px 500px at -10% 20%, rgba(255, 176, 0, 0.04), transparent 60%),
+    var(--color-bg);
+}
+
+/* Film-grain texture over the whole page — a video-production cue, kept faint. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  mix-blend-mode: overlay;
+}
+
+main {
+  position: relative;
+  z-index: 2;
 }
 
 /* Smooth scrollbar for webkit browsers */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 8px;
 }
 ::-webkit-scrollbar-track {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 3px;
+  background: var(--color-border);
+  border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: var(--color-border-soft);
 }
 
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+/* ── Studio-monitor scanline overlay ────────────────────────────────────────── */
+
+.scanlines {
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 0px,
+    rgba(0, 0, 0, 0) 2px,
+    rgba(0, 0, 0, 0.22) 3px,
+    rgba(0, 0, 0, 0.22) 4px
+  );
+  background-size: 100% 4px;
 }
 
-@keyframes fade-in-up {
+/* ── Card entrance: one orchestrated reveal, not scattered effects ──────────── */
+
+@keyframes fade-up {
   from {
     opacity: 0;
-    transform: translateY(12px);
+    transform: translateY(14px);
   }
   to {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+.fade-up {
+  animation: fade-up 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent 25%,
+    rgba(255, 255, 255, 0.06) 50%,
+    transparent 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.6s infinite linear;
+}
+
+/* ── Accessibility & reduced motion ─────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-red);
+  outline-offset: 3px;
+  border-radius: 6px;
 }
